@@ -75,10 +75,9 @@ function  interact_witch_closest_fsir(N::Network, inf_prob_vec::Matrix{Float64},
     inf_overload_matrix = [count(x -> x != 0, col) for col in eachcol(neighbours_matrix .* (1 .- N.network_state))]
     inf_overload_matrix = [x == 0 ? 1 : x for x in inf_overload_matrix]
     inf_overload_matrix = (1 ./ inf_overload_matrix) .^ gamma
-
+    upd_betas = inf_overload_matrix' .* inf_prob_vec
     #0 to 1 and 1 to 0 flip: 1-x x{0,1}
-    transition_matrix = 1 .- (1 .- inf_prob_vec) .^ neighbours_matrix
-    transition_matrix = inf_overload_matrix' .* transition_matrix
+    transition_matrix = 1 .- (1 .- upd_betas) .^ neighbours_matrix
     
     new_network_state::Matrix{Int} = N.network_state .+ (1 .- N.network_state) .* Int.(rand() .< transition_matrix)
     return new_network_state
