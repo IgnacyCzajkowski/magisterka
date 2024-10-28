@@ -1,0 +1,2 @@
+# magisterka
+Master's thesis
