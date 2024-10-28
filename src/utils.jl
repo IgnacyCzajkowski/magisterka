@@ -266,5 +266,59 @@ function resetExistingNetwork(N::Network)
 end
 
 
-### 2 OSTATNIE FUNKCJE DOPIERO PO NAPRAWIENIU POPRZEDNICH
-#Funkcja przeprowadzająca serię symulacji w trybie beta i zapisująca wyniki symulacji do pliku data.txt
+function algorithm_test(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int) 
+    adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
+    obs_indxs, observers_times_matrix = getObservers(N, observer_count)
+    time_step::Int = 1
+    while !all(x -> x != Int(floatmax(Float16)), observers_times_matrix)
+        N_temp_state = copy(N.network_state)
+        N = @set N.network_state = interact_witch_closest_fsir(N, inf_prob_vec, gamma, adjacency_matrix)
+        actuateObservers(N, N_temp_state, obs_indxs, observers_times_matrix, time_step)
+        time_step += 1
+        if time_step > 100000   #Warunek brzegowy symulacji
+            println("Utknieto w pętli")
+            break
+        end
+    end
+    distances_matrix = getDistanceFromObservers(N, obs_indxs)
+    score_matrix = getScore(distances_matrix, observers_times_matrix)
+    prec, rank = analizeScore(N, score_matrix)
+    return prec, rank
+end 
+
+function main(betas_vect, network_params, observer_count::Int, gamma_start::Float64, gamma_step::Float64, i_max::Int, j_max::Int)
+    file = open("data.txt", "w")
+    for i in 1:i_max
+        rank_avg_vect_kor = Vector{Float64}()
+        prec_avg_vect_kor = Vector{Float16}()
+        gamma_vect = Vector{Float64}()
+        gamma = gamma_start + gamma_step * (i - 1)  
+        push!(gamma_vect, gamma)
+        for j in 1:j_max
+
+            if length(network_params) == 2
+                nodes::Int = network_params[1]
+                prob::Float16 = network_params[2]
+                N::Network = generate_network(nodes, prob, inf_num) 
+            elseif length(network_params) == 3
+                nodes = network_params[1]
+                base_nodes::Int = network_params[2]
+                edges::Int = network_params[3]
+                N = generate_network(nodes, base_nodes, edges, inf_num) 
+            end
+                prec_kor, rank_kor = algorithm_test(N, betas_vect, gamma, observer_count)
+                push!(prec_avg_vect_kor, prec_kor)
+                push!(rank_avg_vect_kor, rank_kor)
+                #resetExistingNetwork(N)
+        end
+            prec_avg_kor = sum(prec_avg_vect_kor) / length(prec_avg_vect_kor)
+            std_dev_prec_kor = std(prec_avg_vect_kor) / length(prec_avg_vect_kor)
+            rank_avg_kor = sum(rank_avg_vect_kor) / length(rank_avg_vect_kor)
+            std_dev_rank_kor = std(rank_avg_vect_kor) / length(rank_avg_vect_kor)
+            println("srednia Precyzja (korelacyjny):  ", prec_avg_kor, " +/-: ", std_dev_prec_kor)
+            println("sredni Ranking (korelacyjny):  ", rank_avg_kor, " +/-: ", std_dev_rank_kor)
+
+            write(file, string(gamma) * " " * string(prec_avg_kor) * " " * string(rank_avg_kor) * " " * string(std_dev_prec_kor) * " " * string(std_dev_rank_kor) * " \n")
+    end
+    close(file)
+end
