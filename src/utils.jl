@@ -222,36 +222,6 @@ function analizeScore(N::Network, score_matrix)
     return mean(prec_vect), mean(rank_vect) 
 end
 
-#Funkcja przeprowadzająca pojedyńczą symulacje UWAGA:T0 TRZEBA MOCNO ZMIENIC
-function algorithm(N::Network, inf_prob_loc::Float64, gamma::Float64, observer_count::Int) 
-    obs = getObservers(N, observer_count) 
-    all_obs_infected::Bool = false
-    time_step::Int = 1
-    
-    while all_obs_infected == false
-        N_temp_vect = copy(N.network_state)
-        N = @set N.network_state = get_next_step(N, inf_prob_loc, gamma)
-        actuateObservers(N::Network, N_temp_vect, obs, time_step)
-        all_obs_infected = true
-        
-        for observer in obs
-            if observer.t == Int(floatmax(Float16)) 
-                all_obs_infected = false
-            end
-        end    
-        time_step += 1
-        if time_step > 100000   #Warunek brzegowy symulacji
-            println("Utknieto w pętli")
-            break
-        end
-    end
-   
-    prec_kor, rank_kor = analizeScore(N, getScore(N, obs)) 
-    return prec_kor, rank_kor, obs, N
-      
-end
-
-
 #Funkcja resetująca stan sieci UWAGA: DO AKTUALIZACJI
 function resetExistingNetwork(N::Network)
     new_network_state = Vector{Int}()
