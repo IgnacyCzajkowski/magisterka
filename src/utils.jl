@@ -71,38 +71,10 @@ end
 
 #Funkcja do aktualizacji stanu węzła o indeksie indx w modelu FSIR
 function  interact_witch_closest_fsir(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, adjency_matrix)
-    #=
-    neighbors = all_neighbors(N.graph, indx)
-    k_interact = 0
-    if N.network_state[indx] == 0
-        for i in neighbors
-            if N.network_state[i] == 1
-                k_interact = k_interact + 1
-            end
-        end
-        if rand() < 1 - (1 - inf_prob_loc / k_interact^gamma) ^ k_interact
-            return 1
-        end
-    end
-    return N.network_state[indx]
-    =#
     neighbours_matrix::Matrix{Int} =  N.network_state * adjency_matrix
     inf_overload_matrix = [count(x -> x != 0, col) for col in eachcol(neighbours_matrix .* (1 .- N.network_state))]
     inf_overload_matrix = [x == 0 ? 1 : x for x in inf_overload_matrix]
     inf_overload_matrix = (1 ./ inf_overload_matrix) .^ gamma
-    #print(inf_overload_matrix) #
-    
-    
-    #=
-    print("state_matrix: ") #
-    pretty_table(N.network_state; display_size=(10000, 10000))
-
-    print("adjency_matrix: ") #
-    pretty_table(adjency_matrix; display_size=(10000, 10000))
-
-    print("neighbours_matrix: ") #
-    pretty_table(neighbours_matrix; display_size=(10000, 10000))
-    =#
 
     #0 to 1 and 1 to 0 flip: 1-x x{0,1}
     transition_matrix = 1 .- (1 .- inf_prob_vec) .^ neighbours_matrix
