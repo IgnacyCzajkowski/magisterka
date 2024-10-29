@@ -67,3 +67,6 @@ for i in 1:1000
     output = test_prob_matrix(network, betas, gamma)
     println(output)
 end     
+
+### TRZEBA dzis jeszcze zrobic testy propagacji ze sprawdzaniem czy dobrze updatuje czasy obserwatorow Checked
+### przed tym warto zapewnic calkowita konektywnosc w sieci (jest w kodzie z praktyk) 

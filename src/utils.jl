@@ -62,6 +62,51 @@ function generate_network(nodes::Int, base_nodes::Int, edges::Int, inf_number::I
     return N
 end
 
+#Funkcja wczytująca sieć z pliku
+function generate_network(file_name::String, inf_number::Int)
+    file = open(file_name, "r")
+    longer_format::Bool = length(split(readline(file), " ")) == 2 ? false : true 
+    close(file)
+    G::Graph = SimpleGraph()
+    if !longer_format
+        file = open(file_name, "r")
+        max_vert::Int = 0
+        for line in readlines(file)
+            node1::Int = parse(Int, split(line, " ")[1])
+            node2::Int = parse(Int, split(line, " ")[2])
+            if node1 > max_vert
+                max_vert = node1
+            end 
+            if node2 > max_vert
+                max_vert = node2 
+            end 
+        end 
+        add_vertices!(G, max_vert)
+        close(file)
+    end 
+    
+    file = open(file_name, "r")
+    for (i, line) in enumerate(readlines(file))
+        if i == 1 && longer_format
+            continue 
+        elseif i == 2 && longer_format
+            n::Int = parse(Int, split(line, " ")[1])
+            add_vertices!(G, n)
+        else 
+            node1::Int = parse(Int, split(line, " ")[1])
+            node2::Int = parse(Int, split(line, " ")[2])
+            add_edge!(G, node1, node2)
+        end 
+    end 
+    network_state = zeros(nv(G))
+    network_state::Matrix{Int} = zeros(inf_number, nv(G))
+    source_idx_matrix::Matrix{Int} = initialize_info_source(network_state)
+    N = Network(G, network_state, source_idx_matrix)
+    close(file)
+
+    return N 
+end     
+
 #Funkcja do aktualizacji stanu węzła o indeksie indx w modelu SI
 function  interact_witch_closest(N::Network, indx::Int, inf_prob_loc::Float64, inf_number::Int)
     #neighbors = all_neighbors(N.graph, indx)
@@ -93,34 +138,14 @@ end
 
 #Funkcja losująca i inicjalizująca wektor obserwatorów UWAGA: dodano tablice czasów obserwatorów
 function getObservers(N::Network, l::Int)
-    #obs = Vector{Observer}()
     obs_indxs = sample(1:size(N.network_state, 2), l, replace=false)
-    #=
-    for idx in a
-        o = Observer(idx, Int(floatmax(Float16)))  
-        if idx == N.source_idx
-            o = Observer(idx, 0)   
-        end
-        push!(obs, o)
-    end
-    return obs
-    =#
-    observers_times_matrix = Int(floatmax(Float16)) .* transpose(1 .- N.network_state[:, obs_indxs])
+    observers_times_matrix = Int(floatmax(Float16)) .* (1 .- N.network_state[:, obs_indxs])
     return obs_indxs, observers_times_matrix
 end
 
 #Funkcja służąca aktualizowanie stanu obserwatorów w trakcie symulacji
 function actuateObservers(N_new::Network, N_old_state::Matrix{Int}, obs_indxs, observers_times_matrix, time::Int)
-    #= 
-    for point in obs
-        if point.t == Int(floatmax(Float16))  
-            if N_new.network_state[point.idx] == 1 && N_old_state[point.idx] == 0
-                point.t = time
-            end
-        end
-    end
-    =#
-    obs_changed_matrix = transpose(N_new.network_state[:, obs_indxs]) .+ transpose(N_old_state[:, obs_indxs]) .== 1
+    obs_changed_matrix = N_new.network_state[:, obs_indxs] .+ N_old_state[:, obs_indxs] .== 1
     observers_times_matrix[obs_changed_matrix] .= time
 end
 
