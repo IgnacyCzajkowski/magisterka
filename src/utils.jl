@@ -38,16 +38,14 @@ end
 function generate_network(nodes::Int, prob::Float16, inf_number::Int)
     G::Graph = erdos_renyi(nodes, prob)
     network_state::Matrix{Int} = zeros(inf_number, nodes)
-    for idx in 1:nodes
-        #Zapewnienie braku odizolowanych węzłów
-        if length(all_neighbors(G, idx)) == 0
-            rand_idx = idx
-            while   rand_idx == idx
-                rand_idx = rand(1:nodes)
-            end     
-            add_edge!(G, idx, rand_idx)
-        end    
-    end    
+    
+    clusters = connected_components(G)
+    if length(clusters) > 1
+        for i in 1:(length(clusters) - 1)
+            add_edge!(G, clusters[i][1], clusters[i+1][1])
+        end 
+    end         
+      
     source_idx_matrix::Matrix{Int} = initialize_info_source(network_state) 
     N = Network(G, network_state, source_idx_matrix)
     return N
