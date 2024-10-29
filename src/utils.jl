@@ -176,6 +176,7 @@ end
 
 #Funkcja wyznaczająca precyzję i ranking w symulacji na podstawie wektora wyników
 function analizeScore(N::Network, score_matrix)
+    pretty_table(score_matrix) #Debug 
     prec_vect = Vector{Float64}()   #Wyniki z rozróżnieniem na informacje
     rank_vect = Vector{Float64}()
     for (i, score_i) in enumerate(eachcol(score_matrix))
@@ -214,7 +215,7 @@ function resetExistingNetwork(N::Network)
 end
 
 
-function algorithm_test(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int) 
+function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int) 
     adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
     obs_indxs, observers_times_matrix = getObservers(N, observer_count)
     time_step::Int = 1
@@ -256,13 +257,18 @@ function main(betas_vect, network_params, observer_count::Int, gamma_start::Floa
                 edges::Int = network_params[3]
                 N = generate_network(nodes, base_nodes, edges, inf_num) 
             end
-                prec_vect, rank_vect = algorithm_test(N, betas_vect, gamma, observer_count)
+                while true  #Ading try in case of NaN in cor (0 variance)
+                    try  
+                        prec_vect, rank_vect = algorithm(N, betas_vect, gamma, observer_count)
+                        break 
+                    end 
+                end         
                 prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
-                rank_mat = vcat(rank_mat, rehsape(rank_vect, 1, inf_num))
+                rank_mat = vcat(rank_mat, reshape(rank_vect, 1, inf_num))
                 #resetExistingNetwork(N)
         end
             avg_prec_vect = [mean(x) for x in eachcol(prec_mat)]
-            avg_rank_vect = [mean(x) for x in eachcol(rank_vect)]
+            avg_rank_vect = [mean(x) for x in eachcol(rank_mat)]
             std_dev_prec_vect = [std(x) / sqrt(length(x)) for x in eachcol(prec_mat)]
 
             write(file, string(gamma) * " ")

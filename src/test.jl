@@ -62,7 +62,7 @@ end
 function plot_network(N::Network, obs_idx)
     green = RGB(0., 1., 0.)
     blue = RGB(0., 0., 1.)
-    color_array = [if i in obs_idx ? green : blue for i in 1:nv(N.graph)]
+    color_array = [i in obs_idx ? green : blue for i in 1:nv(N.graph)]
     gplot(N.graph, nodelabel=1:nv(N.graph), nodefillc=color_array)
 end
 
@@ -80,3 +80,108 @@ for i in 1:1000
     println(output)
 end     
 =#
+
+function read_params_from_file(file_name::String)
+    params_array = Vector{}()
+file = open(file_name, "r")
+for line in readlines(file)
+    data = split(split(line, "#")[1], " ")
+    push!(params_array, data)
+end  
+close(file) 
+if length(params_array[1]) == 1
+    network_params = [String(params_array[1][1])]
+elseif length(params_array[1]) == 2
+    #erdos_reyni::Bool = true
+    n = parse(Int, params_array[1][1])
+    p = parse(Float64, params_array[1][2])
+    network_params = [n, p]
+elseif length(params_array[1]) == 3
+    #erdos_reyni = false
+    n = parse(Int, params_array[1][1])
+    n0 = parse(Int, params_array[1][2])
+    k = parse(Int, params_array[1][3])
+    network_params = [n, n0, k]
+end
+
+observer_count::Int = parse(Int, params_array[2][1])
+if params_array[3][1] == "gamma"
+    use_gamma::Bool = true
+    betas_vect = Vector{Float64}()
+    for beta_string in params_array[4]
+        push!(betas_vect, parse(Float64, beta_string))
+    end     
+    inf_num = length(betas_vect)
+    betas_vect = reshape(betas_vect, :, 1)
+       
+    gamma_start = parse(Float64, params_array[5][1])
+    gamma_step = parse(Float64, params_array[5][2])
+    i_max = parse(Int, params_array[5][3])
+elseif params_array[3][1] == "beta"
+    use_gamma = false
+    beta_start = parse(Float64, params_array[4][1])
+    beta_step = parse(Float64, params_array[4][2])
+    i_max = parse(Int, params_array[4][3])
+    gamma = parse(Float64, params_array[5][1])
+end
+
+j_max::Int = parse(Int, params_array[6][1])
+    return network_params, observer_count, betas_vect
+end    
+
+function generate_network_from_net_params(network_params)
+    if length(network_params) == 1
+        N::Network = generate_network(network_params[1])
+    elseif length(network_params) == 2
+        nodes::Int = network_params[1]
+        prob::Float16 = network_params[2]
+        N = generate_network(nodes, prob, inf_num) 
+    elseif length(network_params) == 3
+        nodes = network_params[1]
+        base_nodes::Int = network_params[2]
+        edges::Int = network_params[3]
+        N = generate_network(nodes, base_nodes, edges, inf_num) 
+    end
+    return N 
+end  
+
+function algorithm_test(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int) 
+    adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
+    
+    global obs_times_snapshot
+    global obs_dist_snapshot
+    global obs_idx 
+    global network 
+    
+    obs_indxs, observers_times_matrix = getObservers(N, observer_count)
+    println("obs idx: ", obs_indxs)
+    time_step::Int = 1
+    while !all(x -> x != Int(floatmax(Float16)), observers_times_matrix)
+        N_temp_state = copy(N.network_state)
+        N = @set N.network_state = interact_witch_closest_fsir(N, inf_prob_vec, gamma, adjacency_matrix)
+        actuateObservers(N, N_temp_state, obs_indxs, observers_times_matrix, time_step)
+        time_step += 1
+        if time_step > 100000   #Warunek brzegowy symulacji
+            println("Utknieto w pętli")
+            break
+        end
+    end
+    distances_matrix = getDistanceFromObservers(N, obs_indxs)
+    score_matrix = getScore(distances_matrix, observers_times_matrix)
+
+    obs_times_snapshot = observers_times_matrix
+    obs_dist_snapshot = distances_matrix
+    obs_idx = obs_idx
+    network = N 
+
+    prec_vect, rank_vect = analizeScore(N, score_matrix)
+    return distances_matrix, observers_times_matrix, score_matrix
+end
+
+
+network_params, observer_count, betas_vect = read_params_from_file("params.txt")
+
+for i in 1:100
+    network = generate_network_from_net_params(network_params)
+    algorithm_test(network, betas_vect, 0.0, observer_count)
+end     

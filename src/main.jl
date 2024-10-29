@@ -7,13 +7,15 @@ for line in readlines(file)
     push!(params_array, data)
 end  
 close(file) 
-if length(params_array[1]) == 2
-    erdos_reyni::Bool = true
+if length(params_array[1]) == 1
+    network_params = [String(params_array[1][1])]
+elseif length(params_array[1]) == 2
+    #erdos_reyni::Bool = true
     n = parse(Int, params_array[1][1])
     p = parse(Float64, params_array[1][2])
     network_params = [n, p]
 elseif length(params_array[1]) == 3
-    erdos_reyni = false
+    #erdos_reyni = false
     n = parse(Int, params_array[1][1])
     n0 = parse(Int, params_array[1][2])
     k = parse(Int, params_array[1][3])
