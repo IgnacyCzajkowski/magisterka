@@ -1,6 +1,7 @@
 include("utils.jl")
 using BenchmarkTools
 using PrettyTables 
+using Colors 
 
 function test_prob_matrix(N::Network, betas_vect::Matrix{Float64}, gamma::Float64)
     # Get teoretical prob matrix 
@@ -58,6 +59,17 @@ function get_network_with_random_state(nodes::Int, base_nodes::Int, edges::Int, 
     return network         
 end     
 
+function plot_network(N::Network, obs_idx)
+    green = RGB(0., 1., 0.)
+    blue = RGB(0., 0., 1.)
+    color_array = [if i in obs_idx ? green : blue for i in 1:nv(N.graph)]
+    gplot(N.graph, nodelabel=1:nv(N.graph), nodefillc=color_array)
+end
+
+
+
+
+#=
 for i in 1:1000
     inf_num = rand(1:10)
     betas = 0.1 .+ (0.8 .* rand(inf_num))
@@ -67,6 +79,4 @@ for i in 1:1000
     output = test_prob_matrix(network, betas, gamma)
     println(output)
 end     
-
-### TRZEBA dzis jeszcze zrobic testy propagacji ze sprawdzaniem czy dobrze updatuje czasy obserwatorow Checked
-### przed tym warto zapewnic calkowita konektywnosc w sieci (jest w kodzie z praktyk) 
+=#

@@ -165,35 +165,19 @@ function getDistanceFromObservers(N::Network, obs_indxs)
         push!(d_all, vec(d))
     end    
     distances_matrix = vcat(d_all'...)
-    return transpose(distances_matrix)
+    return distances_matrix #wywalene transpose 
 end
 
 #Funkcja zwracająca wyniki algorytmu korelacyjnego dla wszystkich węzłów sieci
 function getScore(distances_matrix, observers_times_matrix)
-    score_matrix = cor(distances_matrix, observers_times_matrix)
-    #=
-    score = Vector{Float64}()
-    t = Vector{Float64}()
-    for point in obs
-        push!(t, float(point.t))
-    end
-    for i in 1:length(N.network_state)
-        d = getDistanceFromObservers(N, obs, i)
-        sc::Float64 = cor(t, d)
-        if isnan(sc)
-            sc = -1.0   
-        end
-        push!(score, sc)
-    end
-    return score
-    =#
+    score_matrix = cor(transpose(distances_matrix), transpose(observers_times_matrix))
     return score_matrix 
 end
 
 #Funkcja wyznaczająca precyzję i ranking w symulacji na podstawie wektora wyników
 function analizeScore(N::Network, score_matrix)
-    prec_vect = Vector{Float16}()
-    rank_vect = Vector{Float16}()
+    prec_vect = Vector{Float64}()   #Wyniki z rozróżnieniem na informacje
+    rank_vect = Vector{Float64}()
     for (i, score_i) in enumerate(eachcol(score_matrix))
         solutions = Vector{Int}()
         for j in 1:length(score_i)
@@ -213,7 +197,7 @@ function analizeScore(N::Network, score_matrix)
         push!(prec_vect, prec)
         push!(rank_vect, rank)
     end 
-    return mean(prec_vect), mean(rank_vect) 
+    return prec_vect, rank_vect #Zwracamy miary dla kazdej informacji  
 end
 
 #Funkcja resetująca stan sieci UWAGA: DO AKTUALIZACJI
@@ -246,43 +230,46 @@ function algorithm_test(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float6
     end
     distances_matrix = getDistanceFromObservers(N, obs_indxs)
     score_matrix = getScore(distances_matrix, observers_times_matrix)
-    prec, rank = analizeScore(N, score_matrix)
-    return prec, rank
+    prec_vect, rank_vect = analizeScore(N, score_matrix)
+    return prec_vect, rank_vect
 end 
 
 function main(betas_vect, network_params, observer_count::Int, gamma_start::Float64, gamma_step::Float64, i_max::Int, j_max::Int)
     file = open("data.txt", "w")
+    inf_num = length(betas_vect)
     for i in 1:i_max
-        rank_avg_vect_kor = Vector{Float64}()
-        prec_avg_vect_kor = Vector{Float16}()
+        rank_mat = zeros(Float64, 0, inf_num)
+        prec_mat = zeros(Float64, 0, inf_num)
         gamma_vect = Vector{Float64}()
         gamma = gamma_start + gamma_step * (i - 1)  
         push!(gamma_vect, gamma)
         for j in 1:j_max
-
-            if length(network_params) == 2
+            if length(network_params) == 1
+                N::Network = generate_network(network_params[1])
+            elseif length(network_params) == 2
                 nodes::Int = network_params[1]
                 prob::Float16 = network_params[2]
-                N::Network = generate_network(nodes, prob, inf_num) 
+                N = generate_network(nodes, prob, inf_num) 
             elseif length(network_params) == 3
                 nodes = network_params[1]
                 base_nodes::Int = network_params[2]
                 edges::Int = network_params[3]
                 N = generate_network(nodes, base_nodes, edges, inf_num) 
             end
-                prec_kor, rank_kor = algorithm_test(N, betas_vect, gamma, observer_count)
-                push!(prec_avg_vect_kor, prec_kor)
-                push!(rank_avg_vect_kor, rank_kor)
+                prec_vect, rank_vect = algorithm_test(N, betas_vect, gamma, observer_count)
+                prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
+                rank_mat = vcat(rank_mat, rehsape(rank_vect, 1, inf_num))
                 #resetExistingNetwork(N)
         end
-            prec_avg_kor = sum(prec_avg_vect_kor) / length(prec_avg_vect_kor)
-            std_dev_prec_kor = std(prec_avg_vect_kor) / length(prec_avg_vect_kor)
-            rank_avg_kor = sum(rank_avg_vect_kor) / length(rank_avg_vect_kor)
-            std_dev_rank_kor = std(rank_avg_vect_kor) / length(rank_avg_vect_kor)
-            println("srednia Precyzja (korelacyjny):  ", prec_avg_kor, " +/-: ", std_dev_prec_kor)
-            println("sredni Ranking (korelacyjny):  ", rank_avg_kor, " +/-: ", std_dev_rank_kor)
+            avg_prec_vect = [mean(x) for x in eachcol(prec_mat)]
+            avg_rank_vect = [mean(x) for x in eachcol(rank_vect)]
+            std_dev_prec_vect = [std(x) / sqrt(length(x)) for x in eachcol(prec_mat)]
 
-            write(file, string(gamma) * " " * string(prec_avg_kor) * " " * string(rank_avg_kor) * " " * string(std_dev_prec_kor) * " " * string(std_dev_rank_kor) * " \n")
+            write(file, string(gamma) * " ")
+            for i in 1:inf_num
+                end_char::String = i == inf_num ? "\n" : " "
+                write(file, string(avg_prec_vect[i]) * " " * string(std_dev_prec_vect[i]) * " " * string(avg_rank_vect[i]) * end_char)
+            end 
     end
     close(file)
 end
