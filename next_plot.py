@@ -7,7 +7,7 @@ import sys
 #plt.rcParams['text.usetext'] = True 
 plt.rcParams['axes.labelsize'] = 12 
 
-file_names = ["1_05", "1_05_05", "1_05_05_05", "1_05_05_05_05"]
+file_names = ["1_07", "1_07_07", "1_07_07_07", "1_07_07_07_07"]
 network_names = ["ba", "er"]
 
 plt.figure(figsize=(18, 18))
@@ -63,10 +63,10 @@ for i, file_name in enumerate(file_names):
 
         axs_rank[i, j].scatter(gammas, avg_rank, sizes, label = "#beta_1.0 = 1") 
 
-        axs_prec[i, j].scatter(gammas, avg_background_prec, sizes, label = "beta_0.5")      
+        axs_prec[i, j].scatter(gammas, avg_background_prec, sizes, label = "beta_0.7")      
         axs_prec[i, j].errorbar(gammas, avg_background_prec, avg_background_prec_err, ls='none') 
 
-        axs_rank[i, j].scatter(gammas, avg_background_rank, sizes, label = "#beta_0.5")
+        axs_rank[i, j].scatter(gammas, avg_background_rank, sizes, label = "#beta_0.7")
 
 for x, axs in enumerate([axs_prec, axs_rank]):
     ylabel = "Avg Prec" if x == 0 else "Avg Rank"
@@ -87,8 +87,8 @@ for x, axs in enumerate([axs_prec, axs_rank]):
     axs[0, 1].set_title(label="ER")    
 
 for i in range(1, 5):
-    axs_prec[i - 1, 1].text(2.1, 0.5, "#b0.5=" + str(i)) 
-    axs_rank[i - 1, 1].text(2.1, 50, "#b0.5=" + str(i))     
+    axs_prec[i - 1, 1].text(2.1, 0.5, "#b0.7=" + str(i)) 
+    axs_rank[i - 1, 1].text(2.1, 50, "#b0.7=" + str(i))     
 
 fig_prec.savefig(f"background_prec_{sys.argv[1]}.pdf") 
 fig_rank.savefig(f"background_rank_{sys.argv[1]}.pdf")     
