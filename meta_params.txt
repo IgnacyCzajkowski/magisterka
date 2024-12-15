@@ -1,0 +1,5 @@
+Dla E-R 1000 0.008, B-A 1000 5 4 
+
+Dla b_vect [1.0] * n gdzie n = 1, ..., 10 
+
+Dla gamma [0, ..., 2]

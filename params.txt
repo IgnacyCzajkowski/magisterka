@@ -1,6 +1,6 @@
-100 0.08#    Parametry sieci (dla E-R-(n, p), dla B-A-(n, n0, k))
-10#           Liczba obserwatorów
+1000 5 4#    Parametry sieci (dla E-R-(n, p), dla B-A-(n, n0, k))
+100#           Liczba obserwatorów
 gamma#         Tryb przeprowadzania symulacji (gamma dla zmiennej gammy i ustalonej bety, beta dla zmiennej bety i ustalonej gammy)
-1.0 0.8 0.6 0.4 0.2#           Wartosc bety (jezeli w trybie gamma to pojedyncza wartosc, w trybie beta-(start, step, liczba kroków))
+1.0 1.0 0.5 0.5#           Wartosc bety (jezeli w trybie gamma to pojedyncza wartosc, w trybie beta-(start, step, liczba kroków))
 0.0 0.4 6#    Wartosc gammy (jeżeli w trybie gamma to (start, step, liczba kroków), w trybie beta pojedyńcza wartość)
-100#          Ilość powtórzeń do uśrednienia każdego z punktów
+500#          Ilość powtórzeń do uśrednienia każdego z punktów

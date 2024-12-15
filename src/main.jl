@@ -3,8 +3,8 @@ include("utils.jl")
 params_array = Vector{}()
 file = open("params.txt", "r")
 for line in readlines(file)
-    data = split(split(line, "#")[1], " ")
-    push!(params_array, data)
+    data_text = split(split(line, "#")[1], " ")
+    push!(params_array, data_text)
 end  
 close(file) 
 if length(params_array[1]) == 1
@@ -46,4 +46,4 @@ end
 j_max::Int = parse(Int, params_array[6][1])
 
 #algorithm_test(N, inf_prob_vec, 0.0)
-main(betas_vect, network_params, observer_count, gamma_start, gamma_step, i_max, j_max)
+Utils.main(betas_vect, network_params, observer_count, gamma_start, gamma_step, i_max, j_max)

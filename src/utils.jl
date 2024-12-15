@@ -1,3 +1,5 @@
+module Utils 
+
 using Graphs
 using GraphPlot
 using Setfield
@@ -7,6 +9,7 @@ using StatsBase
 using LinearAlgebra
 
 using PrettyTables
+using ProgressMeter 
 
 #Struktura implementująca sieć
 struct Network
@@ -96,7 +99,6 @@ function generate_network(file_name::String, inf_number::Int)
             add_edge!(G, node1, node2)
         end 
     end 
-    network_state = zeros(nv(G))
     network_state::Matrix{Int} = zeros(inf_number, nv(G))
     source_idx_matrix::Matrix{Int} = initialize_info_source(network_state)
     N = Network(G, network_state, source_idx_matrix)
@@ -176,7 +178,6 @@ end
 
 #Funkcja wyznaczająca precyzję i ranking w symulacji na podstawie wektora wyników
 function analizeScore(N::Network, score_matrix)
-    pretty_table(score_matrix) #Debug 
     prec_vect = Vector{Float64}()   #Wyniki z rozróżnieniem na informacje
     rank_vect = Vector{Float64}()
     for (i, score_i) in enumerate(eachcol(score_matrix))
@@ -228,7 +229,7 @@ function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, ob
             println("Utknieto w pętli")
             break
         end
-    end
+    end 
     distances_matrix = getDistanceFromObservers(N, obs_indxs)
     score_matrix = getScore(distances_matrix, observers_times_matrix)
     prec_vect, rank_vect = analizeScore(N, score_matrix)
@@ -236,6 +237,7 @@ function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, ob
 end 
 
 function main(betas_vect, network_params, observer_count::Int, gamma_start::Float64, gamma_step::Float64, i_max::Int, j_max::Int)
+    progres_bar = Progress(i_max * j_max, desc="Simulation complition...")
     file = open("data.txt", "w")
     inf_num = length(betas_vect)
     for i in 1:i_max
@@ -260,11 +262,16 @@ function main(betas_vect, network_params, observer_count::Int, gamma_start::Floa
                 while true  #Ading try in case of NaN in cor (0 variance)
                     try  
                         prec_vect, rank_vect = algorithm(N, betas_vect, gamma, observer_count)
-                        break 
+                        prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
+                        rank_mat = vcat(rank_mat, reshape(rank_vect, 1, inf_num))
+                        break
+                    catch ex 
+                        println("Exeption occured")     
                     end 
-                end         
-                prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
-                rank_mat = vcat(rank_mat, reshape(rank_vect, 1, inf_num))
+                end 
+                next!(progres_bar)        
+                #prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
+                #rank_mat = vcat(rank_mat, reshape(rank_vect, 1, inf_num))
                 #resetExistingNetwork(N)
         end
             avg_prec_vect = [mean(x) for x in eachcol(prec_mat)]
@@ -278,4 +285,13 @@ function main(betas_vect, network_params, observer_count::Int, gamma_start::Floa
             end 
     end
     close(file)
-end
+end 
+
+# Exporting all functions 
+for name in names(@__MODULE__, all=true)
+    if isdefined(@__MODULE__, name) && isa(getfield(@__MODULE__, name), Function)
+        @eval export $name 
+    end     
+end     
+
+end #Module end 
