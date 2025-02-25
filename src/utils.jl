@@ -126,7 +126,21 @@ function  interact_witch_closest_fsir(N::Network, inf_prob_vec::Matrix{Float64},
     
     new_network_state::Matrix{Int} = N.network_state .+ (1 .- N.network_state) .* Int.(rand() .< transition_matrix)
     return new_network_state
-end
+end 
+
+#Propagation v2 doesnt use unique informations as denominator but all informations
+function interact_witch_closest_fsir_version_2(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, adjency_matrix)
+    neighbours_matrix::Matrix{Int} =  N.network_state * adjency_matrix
+    inf_overload_matrix = [sum(col) for col in eachcol(neighbours_matrix .* (1 .- N.network_state))]
+    inf_overload_matrix = [x == 0 ? 1 : x for x in inf_overload_matrix]
+    inf_overload_matrix = (1 ./ inf_overload_matrix) .^ gamma
+    upd_betas = inf_overload_matrix' .* inf_prob_vec
+    #0 to 1 and 1 to 0 flip: 1-x x{0,1}
+    transition_matrix = 1 .- (1 .- upd_betas) .^ neighbours_matrix
+    
+    new_network_state::Matrix{Int} = N.network_state .+ (1 .- N.network_state) .* Int.(rand() .< transition_matrix)
+    return new_network_state
+end     
 
 #Funkcja do inicjalizacji bet z zadanego rozkladu normalnego
 function generate_betas(inf_num::Int, mu::Float64, st::Float64)
@@ -216,13 +230,17 @@ function resetExistingNetwork(N::Network)
 end
 
 
-function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int) 
+function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int, propagation_v2::Bool) 
     adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
     obs_indxs, observers_times_matrix = getObservers(N, observer_count)
     time_step::Int = 1
     while !all(x -> x != Int(floatmax(Float16)), observers_times_matrix)
         N_temp_state = copy(N.network_state)
-        N = @set N.network_state = interact_witch_closest_fsir(N, inf_prob_vec, gamma, adjacency_matrix)
+        if propagation_v2 == false
+            N = @set N.network_state = interact_witch_closest_fsir(N, inf_prob_vec, gamma, adjacency_matrix)
+        elseif propagation_v2 == true
+            N = @set N.network_state = interact_witch_closest_fsir_version_2(N, inf_prob_vec, gamma, adjacency_matrix)
+        end         
         actuateObservers(N, N_temp_state, obs_indxs, observers_times_matrix, time_step)
         time_step += 1
         if time_step > 100000   #Warunek brzegowy symulacji
@@ -236,8 +254,8 @@ function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, ob
     return prec_vect, rank_vect
 end 
 
-function main(betas_vect, network_params, observer_count::Int, gamma_start::Float64, gamma_step::Float64, i_max::Int, j_max::Int)
-    progres_bar = Progress(i_max * j_max, desc="Simulation complition...")
+function main(betas_vect, network_params, observer_count::Int, gamma_start::Float64, gamma_step::Float64, i_max::Int, j_max::Int, propagation_v2::Bool)
+    #progres_bar = Progress(i_max * j_max, desc="Simulation complition...") #Na potrzeby porownania z parallel
     file = open("data.txt", "w")
     inf_num = length(betas_vect)
     for i in 1:i_max
@@ -261,7 +279,7 @@ function main(betas_vect, network_params, observer_count::Int, gamma_start::Floa
             end
                 while true  #Ading try in case of NaN in cor (0 variance)
                     try  
-                        prec_vect, rank_vect = algorithm(N, betas_vect, gamma, observer_count)
+                        prec_vect, rank_vect = algorithm(N, betas_vect, gamma, observer_count, propagation_v2)
                         prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
                         rank_mat = vcat(rank_mat, reshape(rank_vect, 1, inf_num))
                         break
@@ -269,10 +287,7 @@ function main(betas_vect, network_params, observer_count::Int, gamma_start::Floa
                         println("Exeption occured")     
                     end 
                 end 
-                next!(progres_bar)        
-                #prec_mat = vcat(prec_mat, reshape(prec_vect, 1, inf_num))
-                #rank_mat = vcat(rank_mat, reshape(rank_vect, 1, inf_num))
-                #resetExistingNetwork(N)
+                #next!(progres_bar) #Na potrzeby porownania z parallel       
         end
             avg_prec_vect = [mean(x) for x in eachcol(prec_mat)]
             avg_rank_vect = [mean(x) for x in eachcol(rank_mat)]

@@ -45,5 +45,10 @@ end
 
 j_max::Int = parse(Int, params_array[6][1])
 
+propagation_v2::Bool = parse(Bool, params_array[7][1])
+
 #algorithm_test(N, inf_prob_vec, 0.0)
-Utils.main(betas_vect, network_params, observer_count, gamma_start, gamma_step, i_max, j_max)
+global_start_time = time()
+Utils.main(betas_vect, network_params, observer_count, gamma_start, gamma_step, i_max, j_max, propagation_v2)
+total_time = time() - global_start_time 
+println(total_time)
