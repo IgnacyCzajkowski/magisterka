@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt 
 import numpy as np 
 import sys
-import mpld3 
+import plotly.graph_objects as go
  
 
 plt.rcParams['axes.labelsize'] = 12 
@@ -16,7 +16,9 @@ k = 3
 
 
 for network in network_names:
-    ax = plt.figure().add_subplot(projection='3d')
+    #ax = plt.figure().add_subplot(projection='3d')
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
     comb_dict = {}
     for main_b in main_betas:
         for noise_b in noise_betas:
@@ -47,8 +49,25 @@ for network in network_names:
         m_betas = data_points[::3]
         n_betas = data_points[1::3]
         prec = data_points[2::3]
+        fig = go.Figure(data=[go.Scatter3d(
+            x=m_betas,
+            y=n_betas,
+            z=prec,
+            mode='markers',
+            marker=dict(size=5, color='red')
+        )])
+        fig.update_layout(
+            title=network + ", alpha: " + str(label),
+            scene=dict(
+        xaxis_title='main beta',  # Label for the X axis
+        yaxis_title='noise beta',  # Label for the Y axis
+        zaxis_title='precision'   # Label for the Z axis
+    )
+        )
+        fig.write_html("3d_noise_vs_main_prec_" + network + "_" + str(label) + ".html")
+        '''
         ax.scatter(m_betas, n_betas, prec, label = label)  
-        ax.legend()
+    ax.legend()
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_zlim(0, 1) 
@@ -57,4 +76,8 @@ for network in network_names:
     ax.set_ylabel('Noise beta')
     ax.set_zlabel('Precision')
     ax.set_title(network)
-    plt.write_html("3d_noise_vs_main_prec_" + network + ".html")    
+    html_str = mpld3.fig_to_html(fig)
+    #plt.write_html("3d_noise_vs_main_prec_" + network + ".html") 
+    with open("3d_noise_vs_main_prec_" + network + ".html", "w") as f:
+        f.write(html_str)   
+      '''  
