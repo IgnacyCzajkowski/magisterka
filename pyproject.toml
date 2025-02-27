@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "magisterka"
+version = "0.1.0"
+description = ""
+authors = ["Ignacy Czajkowski <czignacy@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+matplotlib = "^3.10.1"
+numpy = "^2.2.3"
+mpld3 = "^0.5.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

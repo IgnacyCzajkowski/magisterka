@@ -23,7 +23,7 @@ fig_rank, axs_rank = plt.subplots(3, 2)
 for i, beta_name in enumerate(beta_names):
     for j, network_name in enumerate(network_names):
         for file_name in file_names:
-            dir = "wyniki\\zaleznosc_od_iilosci_inf\\"
+            dir = "wyniki\\zaleznosc_od_ilosci_inf_propv2\\"
             dir += beta_name + "\\" + network_name + "\\"
             dir += file_name
             file = open(dir + ".txt", "r")
@@ -71,8 +71,8 @@ for x, axs in enumerate([axs_prec, axs_rank]):
             ax.set_yticks(np.arange(0, 1.01, step=0.2))
             ax.set_ylim([0,1])
         else:
-            ax.set_yticks(np.arange(0, 55.01, step = 10))
-            ax.set_ylim([0, 55]) 
+            ax.set_yticks(np.arange(0, 300.01, step = 60))
+            ax.set_ylim([0, 300]) 
         ax.grid() 
         ax.label_outer()
 
