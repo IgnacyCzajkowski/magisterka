@@ -1,8 +1,53 @@
 include("utils.jl")
 using Base.Threads: @threads
+using Setfield
 using Statistics
 using Printf
+using Graphs
+using GraphPlot
+using Plots
+using StatsBase
+using LinearAlgebra
 
+using PrettyTables
+using ProgressMeter
+
+function SI_step(N::Utils.Network, beta::Float64)
+    next_state = copy(N.network_state)
+    for idx in 1:length(N.network_state)
+        if N.network_state[idx] == 1
+            for neigh_idx in all_neighbors(N.graph, idx)
+                if rand() < beta
+                    next_state[neigh_idx] = 1
+                end     
+            end    
+        end     
+    end    
+    return next_state
+end   
+
+function algorithm_si(N::Utils.Network, beta::Float64, observer_count::Int) 
+    println(N.source_idx_matrix) #Debug 
+    adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
+    obs_indxs, observers_times_matrix = Utils.getObservers(N, observer_count)
+    time_step::Int = 1
+    while !all(x -> x != Int(floatmax(Float16)), observers_times_matrix)
+        N_temp_state = copy(N.network_state)
+        N = @set N.network_state = SI_step(N, beta)        
+        Utils.actuateObservers(N, N_temp_state, obs_indxs, observers_times_matrix, time_step)
+        time_step += 1
+        if time_step > 100000   #Warunek brzegowy symulacji
+            println("Utknieto w pętli")
+            break
+        end
+    end 
+    #println(observers_times_matrix) #Debug 
+    distances_matrix = Utils.getDistanceFromObservers(N, obs_indxs)
+    println(distances_matrix[N.source_idx_matrix[1], :]) #Debug 
+    score_matrix = Utils.getScore(distances_matrix, observers_times_matrix)
+    prec_vect, rank_vect = Utils.analizeScore(N, score_matrix)
+    return prec_vect, rank_vect
+end 
 
 params_array = Vector{}()
 file = open("params.txt", "r")
@@ -57,6 +102,7 @@ j_max::Int = parse(Int, params_array[6][1])
 println(j_max) #Debug 
 propagation_v2::Bool = parse(Bool, params_array[7][1])
 
+
 # This function performs j_max simulations for a given gamma (or beta) setting in parallel.
 function parallel_simulation_set(betas_vect, network_params, observer_count, gamma, j_max, propagation_v2)
     # Determine the number of information sources from betas_vect
@@ -88,7 +134,7 @@ function parallel_simulation_set(betas_vect, network_params, observer_count, gam
         # we retry until success.
         while true
             try
-                local_prec, local_rank = Utils.algorithm(N, betas_vect, gamma, observer_count, propagation_v2)
+                local_prec, local_rank = algorithm_si(N, betas_vect[1], observer_count)
                 break
             catch ex
                 @printf("Thread %d: Exception occurred, retrying simulation...\n", threadid())

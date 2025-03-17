@@ -34,6 +34,7 @@ function initialize_info_source(network_state::Matrix{Int})
         network_state[inf, idx] = 1
         source_indx_matrix[inf, 1] = idx
     end
+    #println(source_indx_matrix) #Debug 
     return source_indx_matrix 
 end
 
@@ -187,6 +188,10 @@ end
 #Funkcja zwracająca wyniki algorytmu korelacyjnego dla wszystkich węzłów sieci
 function getScore(distances_matrix, observers_times_matrix)
     score_matrix = cor(transpose(distances_matrix), transpose(observers_times_matrix))
+    #println("from getScore: ", distances_matrix) #Debug 
+    println("from getScore: ", observers_times_matrix) #Debug 
+    println("from getScore: ", score_matrix) #Debug 
+    println("from getScore: ", size(score_matrix))
     return score_matrix 
 end
 
@@ -231,6 +236,7 @@ end
 
 
 function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int, propagation_v2::Bool) 
+    println(N.source_idx_matrix) #Debug 
     adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
     obs_indxs, observers_times_matrix = getObservers(N, observer_count)
     time_step::Int = 1
@@ -248,7 +254,9 @@ function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, ob
             break
         end
     end 
+    #println(observers_times_matrix) #Debug 
     distances_matrix = getDistanceFromObservers(N, obs_indxs)
+    println(distances_matrix[N.source_idx_matrix[1], :]) #Debug 
     score_matrix = getScore(distances_matrix, observers_times_matrix)
     prec_vect, rank_vect = analizeScore(N, score_matrix)
     return prec_vect, rank_vect
