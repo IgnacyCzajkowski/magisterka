@@ -109,13 +109,79 @@ function generate_network(file_name::String, inf_number::Int)
 end     
 
 #Funkcja do aktualizacji stanu węzła o indeksie indx w modelu SI
-function  interact_witch_closest(N::Network, indx::Int, inf_prob_loc::Float64, inf_number::Int)
-    #neighbors = all_neighbors(N.graph, indx)
-    adjency_matrix = Matrix(Graphs.LinAlg.adjacency_matrix(N.graph))
-    return N.network_state[indx]
+function  interact_witch_closest_fsir_version_2(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64)
+    next_state = copy(N.network_state)
+    total_inf_to_idx = Vector{Int}()
+    for idx in 1:nv(N.graph)
+       total_inf::Int = 0
+       for inf in 1:length(inf_prob_vec)
+            if N.network_state[inf, idx] == 0 
+                for neigh_idx in all_neighbors(N.graph, idx)
+                    if N.network_state[inf, neigh_idx] == 1
+                        total_inf = total_inf + 1
+                    end     
+                end
+            end
+        end
+        push!(total_inf_to_idx, total_inf)             
+    end  
+    for idx in 1:nv(N.graph)
+        for inf in 1:length(inf_prob_vec)
+            if N.network_state[inf, idx] == 1
+                for neigh_idx in all_neighbors(N.graph, idx)
+                    if total_inf_to_idx[neigh_idx] != 0
+                        upd_beta = inf_prob_vec[inf] / (total_inf_to_idx[neigh_idx] ^ gamma)
+                        if rand() < upd_beta 
+                            next_state[inf, neigh_idx] = 1
+                        end     
+                    end    
+                end    
+            end    
+        end        
+    end  
+    return next_state  
+end
+
+function  interact_witch_closest_fsir(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64)
+    next_state = copy(N.network_state)
+    total_inf_to_idx = Vector{Int}()
+    for idx in 1:nv(N.graph)
+       total_inf::Int = 0
+       for inf in 1:length(inf_prob_vec)
+            add_inf::Bool = false 
+            if N.network_state[inf, idx] == 0 
+                for neigh_idx in all_neighbors(N.graph, idx)
+                    if N.network_state[inf, neigh_idx] == 1
+                        add_inf = true 
+                    end    
+                end
+            end
+            if add_inf == true 
+                total_inf = total_inf + 1
+            end
+        end
+        push!(total_inf_to_idx, total_inf)             
+    end  
+    for idx in 1:nv(N.graph)
+        for inf in 1:length(inf_prob_vec)
+            if N.network_state[inf, idx] == 1
+                for neigh_idx in all_neighbors(N.graph, idx)
+                    if total_inf_to_idx[neigh_idx] != 0
+                        upd_beta = inf_prob_vec[inf] / (total_inf_to_idx[neigh_idx] ^ gamma)
+                        if rand() < upd_beta 
+                            next_state[inf, neigh_idx] = 1
+                        end     
+                    end    
+                end    
+            end    
+        end        
+    end  
+    return next_state  
 end
 
 #Funkcja do aktualizacji stanu węzła o indeksie indx w modelu FSIR
+
+#=
 function  interact_witch_closest_fsir(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, adjency_matrix)
     neighbours_matrix::Matrix{Int} =  N.network_state * adjency_matrix
     inf_overload_matrix = [count(x -> x != 0, col) for col in eachcol(neighbours_matrix .* (1 .- N.network_state))]
@@ -128,8 +194,10 @@ function  interact_witch_closest_fsir(N::Network, inf_prob_vec::Matrix{Float64},
     new_network_state::Matrix{Int} = N.network_state .+ (1 .- N.network_state) .* Int.(rand() .< transition_matrix)
     return new_network_state
 end 
+=#
 
 #Propagation v2 doesnt use unique informations as denominator but all informations
+#=
 function interact_witch_closest_fsir_version_2(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, adjency_matrix)
     neighbours_matrix::Matrix{Int} =  N.network_state * adjency_matrix
     inf_overload_matrix = [sum(col) for col in eachcol(neighbours_matrix .* (1 .- N.network_state))]
@@ -142,6 +210,7 @@ function interact_witch_closest_fsir_version_2(N::Network, inf_prob_vec::Matrix{
     new_network_state::Matrix{Int} = N.network_state .+ (1 .- N.network_state) .* Int.(rand() .< transition_matrix)
     return new_network_state
 end     
+=#
 
 #Funkcja do inicjalizacji bet z zadanego rozkladu normalnego
 function generate_betas(inf_num::Int, mu::Float64, st::Float64)
@@ -187,11 +256,11 @@ end
 
 #Funkcja zwracająca wyniki algorytmu korelacyjnego dla wszystkich węzłów sieci
 function getScore(distances_matrix, observers_times_matrix)
-    score_matrix = cor(transpose(distances_matrix), transpose(observers_times_matrix))
+    score_matrix::Matrix{Float64} = cor(transpose(distances_matrix), transpose(observers_times_matrix))
     #println("from getScore: ", distances_matrix) #Debug 
-    println("from getScore: ", observers_times_matrix) #Debug 
-    println("from getScore: ", score_matrix) #Debug 
-    println("from getScore: ", size(score_matrix))
+    #println("from getScore: ", observers_times_matrix) #Debug 
+    #println("from getScore: ", score_matrix) #Debug 
+    #println("from getScore: ", size(score_matrix))
     return score_matrix 
 end
 
@@ -236,16 +305,16 @@ end
 
 
 function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, observer_count::Int, propagation_v2::Bool) 
-    println(N.source_idx_matrix) #Debug 
+    #println(N.source_idx_matrix) #Debug 
     adjacency_matrix = Graphs.LinAlg.adjacency_matrix(N.graph)
     obs_indxs, observers_times_matrix = getObservers(N, observer_count)
     time_step::Int = 1
     while !all(x -> x != Int(floatmax(Float16)), observers_times_matrix)
         N_temp_state = copy(N.network_state)
         if propagation_v2 == false
-            N = @set N.network_state = interact_witch_closest_fsir(N, inf_prob_vec, gamma, adjacency_matrix)
+            N = @set N.network_state = interact_witch_closest_fsir(N, inf_prob_vec, gamma)
         elseif propagation_v2 == true
-            N = @set N.network_state = interact_witch_closest_fsir_version_2(N, inf_prob_vec, gamma, adjacency_matrix)
+            N = @set N.network_state = interact_witch_closest_fsir_version_2(N, inf_prob_vec, gamma)
         end         
         actuateObservers(N, N_temp_state, obs_indxs, observers_times_matrix, time_step)
         time_step += 1
@@ -256,7 +325,7 @@ function algorithm(N::Network, inf_prob_vec::Matrix{Float64}, gamma::Float64, ob
     end 
     #println(observers_times_matrix) #Debug 
     distances_matrix = getDistanceFromObservers(N, obs_indxs)
-    println(distances_matrix[N.source_idx_matrix[1], :]) #Debug 
+    #println(distances_matrix[N.source_idx_matrix[1], :]) #Debug 
     score_matrix = getScore(distances_matrix, observers_times_matrix)
     prec_vect, rank_vect = analizeScore(N, score_matrix)
     return prec_vect, rank_vect

@@ -5,7 +5,8 @@ using Printf
 
 
 params_array = Vector{}()
-file = open("params.txt", "r")
+params_file_name = ARGS[1]  # Dodanie mozliwosci zmiany params name
+file = open(params_file_name, "r")
 for line in readlines(file)
     data_text = split(split(line, "#")[1], " ")
     push!(params_array, data_text)
@@ -26,10 +27,10 @@ elseif length(params_array[1]) == 3
     network_params = [n, n0, k]
 end
 
-println(network_params) #Debug
+#println(network_params) #Debug
 
 observer_count::Int = parse(Int, params_array[2][1])
-println(observer_count) #Debug
+#println(observer_count) #Debug
 
 if params_array[3][1] == "gamma"
     use_gamma::Bool = true
@@ -39,8 +40,8 @@ if params_array[3][1] == "gamma"
     end     
     inf_num = length(betas_vect)
     betas_vect = reshape(betas_vect, :, 1)
-    println(inf_num) #Debug 
-    println(betas_vect) #Debug 
+    #println(inf_num) #Debug 
+    #println(betas_vect) #Debug 
        
     gamma_start = parse(Float64, params_array[5][1])
     gamma_step = parse(Float64, params_array[5][2])
@@ -54,7 +55,7 @@ elseif params_array[3][1] == "beta"
 end
 
 j_max::Int = parse(Int, params_array[6][1])
-println(j_max) #Debug 
+#println(j_max) #Debug 
 propagation_v2::Bool = parse(Bool, params_array[7][1])
 
 # This function performs j_max simulations for a given gamma (or beta) setting in parallel.
@@ -100,7 +101,7 @@ function parallel_simulation_set(betas_vect, network_params, observer_count, gam
         rank_mat[j, :] = local_rank
     end
     
-    println(prec_mat) #Debug 
+    #println(prec_mat) #Debug 
     return prec_mat, rank_mat
 end
 
@@ -108,7 +109,8 @@ end
 # runs the j_max simulations in parallel for each, computes the averages and standard deviations,
 # and writes the results to an output file.
 function parallel_main(betas_vect, network_params, observer_count, gamma_start, gamma_step, i_max, j_max, propagation_v2)
-    outfile = open("data.txt", "w")
+    outfile_name = ARGS[2]
+    outfile = open(outfile_name, "w") # Dodanie mozliwosci zmiany outfile 
     # Loop over the different gamma (or beta) values.
     for i in 1:i_max
         gamma = gamma_start + gamma_step*(i - 1)
