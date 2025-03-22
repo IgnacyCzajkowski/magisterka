@@ -150,6 +150,7 @@ function parallel_simulation_set(betas_vect, network_params, observer_count, gam
     return prec_mat, rank_mat
 end
 
+i::Int = 4
 # This is the top-level function that loops over the i_max parameter sets,
 # runs the j_max simulations in parallel for each, computes the averages and standard deviations,
 # and writes the results to an output file.
