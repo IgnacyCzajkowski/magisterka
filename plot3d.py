@@ -2,11 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np 
 import sys
 import plotly.graph_objects as go
- 
+import seaborn as sns 
+import pandas as pd 
 
 plt.rcParams['axes.labelsize'] = 12 
 
-main_betas = ["1", "08", "06", "04", "02"]
+main_betas = ["1", "08", "06", "04"]
 noise_betas = ["_03", "_05", "_07", "_09"]
 
 
@@ -49,6 +50,14 @@ for network in network_names:
         m_betas = data_points[::3]
         n_betas = data_points[1::3]
         prec = data_points[2::3]
+
+        df = pd.DataFrame({'main beta': m_betas, 'noise beta': n_betas, 'precision': prec})
+        heatmap_data = df.pivot(index='noise beta', columns='main beta', values='precision')
+        plt.figure(figsize=(8, 8))
+        sns.heatmap(heatmap_data, annot = True, cmap="coolwarm", cbar_kws={'label': 'Precision'})
+        plt.title(network + " alpha: " + str(label))
+        plt.savefig("3d_new_" + network + "_" + str(label) + ".pdf")
+        '''
         fig = go.Figure(data=[go.Scatter3d(
             x=m_betas,
             y=n_betas,
@@ -64,8 +73,8 @@ for network in network_names:
         zaxis_title='precision'   # Label for the Z axis
     )
         )
-        fig.write_html("3d_noise_vs_main_prec_" + network + "_" + str(label) + ".html")
-        '''
+        fig.write_html("3d_new_" + network + "_" + str(label) + ".html")
+        
         ax.scatter(m_betas, n_betas, prec, label = label)  
     ax.legend()
     ax.set_xlim(0, 1)
