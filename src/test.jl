@@ -3,6 +3,8 @@ using BenchmarkTools
 using PrettyTables 
 using Colors 
 
+
+#=
 function test_prob_matrix(N::Network, betas_vect::Matrix{Float64}, gamma::Float64)
     # Get teoretical prob matrix 
     #@btime begin #time bench 
@@ -185,3 +187,8 @@ for i in 1:100
     network = generate_network_from_net_params(network_params)
     algorithm_test(network, betas_vect, 0.0, observer_count)
 end     
+=#
+
+for i in range(1000)
+    new_state = Utils.interact
+end    

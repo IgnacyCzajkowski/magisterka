@@ -12,23 +12,23 @@ $input_files = @(
 #>
 
 $input_files = @(
-    ".\params_dir\pv1_ifn_bn04_b03_ba_4.txt", ".\params_dir\pv1_ifn_bn04_b03_er_4.txt",
-    ".\params_dir\pv1_ifn_bn04_b05_ba_4.txt", ".\params_dir\pv1_ifn_bn04_b05_er_4.txt",
-    ".\params_dir\pv1_ifn_bn04_b07_ba_4.txt", ".\params_dir\pv1_ifn_bn04_b07_er_4.txt",
-    ".\params_dir\pv1_ifn_bn04_b09_ba_4.txt", ".\params_dir\pv1_ifn_bn04_b09_er_4.txt",
+    ".\params_dir\pv2_ifn_bn04_b03_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b03_er_4.txt",
+    ".\params_dir\pv2_ifn_bn04_b05_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b05_er_4.txt",
+    ".\params_dir\pv2_ifn_bn04_b07_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b07_er_4.txt",
+    ".\params_dir\pv2_ifn_bn04_b09_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b09_er_4.txt",
 
-    ".\params_dir\pv1_ifn_bn06_b03_ba_4.txt", ".\params_dir\pv1_ifn_bn06_b03_er_4.txt",
-    ".\params_dir\pv1_ifn_bn06_b05_ba_4.txt", ".\params_dir\pv1_ifn_bn06_b05_er_4.txt",
-    ".\params_dir\pv1_ifn_bn06_b07_ba_4.txt", ".\params_dir\pv1_ifn_bn06_b07_er_4.txt",
-    ".\params_dir\pv1_ifn_bn06_b09_ba_4.txt", ".\params_dir\pv1_ifn_bn06_b09_er_4.txt",
+    ".\params_dir\pv2_ifn_bn06_b03_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b03_er_4.txt",
+    ".\params_dir\pv2_ifn_bn06_b05_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b05_er_4.txt",
+    ".\params_dir\pv2_ifn_bn06_b07_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b07_er_4.txt",
+    ".\params_dir\pv2_ifn_bn06_b09_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b09_er_4.txt",
 
-    ".\params_dir\pv1_ifn_bn08_b03_ba_4.txt", ".\params_dir\pv1_ifn_bn08_b03_er_4.txt",
-    ".\params_dir\pv1_ifn_bn08_b05_ba_4.txt", ".\params_dir\pv1_ifn_bn08_b05_er_4.txt",
-    ".\params_dir\pv1_ifn_bn08_b07_ba_4.txt", ".\params_dir\pv1_ifn_bn08_b07_er_4.txt",
-    ".\params_dir\pv1_ifn_bn08_b09_ba_4.txt", ".\params_dir\pv1_ifn_bn08_b09_er_4.txt"
+    ".\params_dir\pv2_ifn_bn08_b03_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b03_er_4.txt",
+    ".\params_dir\pv2_ifn_bn08_b05_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b05_er_4.txt",
+    ".\params_dir\pv2_ifn_bn08_b07_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b07_er_4.txt",
+    ".\params_dir\pv2_ifn_bn08_b09_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b09_er_4.txt"
 )
 
-$prefix = ".\wyniki_nowe\propv1\rozne_bety\nowe\"
+$prefix = ".\wyniki_nowe\propv2\rozne_bety\nowe\"
 
 $output_files = @(
     "${prefix}b04bn03ba.txt", "${prefix}b04bn03er.txt",

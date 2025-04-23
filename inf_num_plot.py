@@ -23,7 +23,7 @@ fig_rank, axs_rank = plt.subplots(3, 2)
 for i, beta_name in enumerate(beta_names):
     for j, network_name in enumerate(network_names):
         for file_name in file_names:
-            dir = "wyniki_nowe\\propv2\\zaleznosc_od_ilosci_inf\\"
+            dir = "wyniki_nowe\\propv1\\zaleznosc_od_ilosci_inf\\"
             dir += beta_name + "\\" + network_name + "\\"
             dir += file_name
             file = open(dir + ".txt", "r")
@@ -67,12 +67,15 @@ for x, axs in enumerate([axs_prec, axs_rank]):
     for ax in axs.flat:
         ax.set(xlabel='IOL strength alpha', ylabel=ylabel)
         ax.set_xticks(np.arange(0, 2.01, step=0.5))
+        
         if x == 0:
-            ax.set_yticks(np.arange(0, 1.01, step=0.2))
-            ax.set_ylim([0,1])
+            ax.set_yticks(np.arange(round(ax.get_ylim()[0], 2), round(ax.get_ylim()[1], 2), step=round((ax.get_ylim()[1] - ax.get_ylim()[0]) / 5, 2)))
+            #ax.set_ylim([0,1])
+        '''    
         else:
             ax.set_yticks(np.arange(0, 300.01, step = 60))
-            ax.set_ylim([0, 300]) 
+            ax.set_ylim([0, 300])
+        '''     
         ax.grid() 
         ax.label_outer()
 
@@ -81,7 +84,8 @@ for x, axs in enumerate([axs_prec, axs_rank]):
     axs[0, 1].set_title(label="ER")
 
 for i in range(len(beta_labels)):
-    axs_prec[i, 1].text(2.15, 0.5, beta_labels[i]) 
+    print(axs_prec[i, 1].get_ylim())
+    axs_prec[i, 1].text(2.15, axs_prec[i, 1].get_ylim()[0] + 0.5 * (axs_prec[i, 1].get_ylim()[1] - axs_prec[i, 1].get_ylim()[0]), beta_labels[i]) 
     axs_rank[i, 1].text(2.15, 27, beta_labels[i]) 
 
 fig_prec.savefig(f"ilosc_inf_prec_{sys.argv[1]}.pdf") 
