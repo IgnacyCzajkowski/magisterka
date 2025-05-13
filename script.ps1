@@ -12,39 +12,29 @@ $input_files = @(
 #>
 
 $input_files = @(
-    ".\params_dir\pv2_ifn_bn04_b03_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b03_er_4.txt",
-    ".\params_dir\pv2_ifn_bn04_b05_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b05_er_4.txt",
-    ".\params_dir\pv2_ifn_bn04_b07_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b07_er_4.txt",
-    ".\params_dir\pv2_ifn_bn04_b09_ba_4.txt", ".\params_dir\pv2_ifn_bn04_b09_er_4.txt",
-
-    ".\params_dir\pv2_ifn_bn06_b03_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b03_er_4.txt",
-    ".\params_dir\pv2_ifn_bn06_b05_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b05_er_4.txt",
-    ".\params_dir\pv2_ifn_bn06_b07_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b07_er_4.txt",
-    ".\params_dir\pv2_ifn_bn06_b09_ba_4.txt", ".\params_dir\pv2_ifn_bn06_b09_er_4.txt",
-
-    ".\params_dir\pv2_ifn_bn08_b03_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b03_er_4.txt",
-    ".\params_dir\pv2_ifn_bn08_b05_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b05_er_4.txt",
-    ".\params_dir\pv2_ifn_bn08_b07_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b07_er_4.txt",
-    ".\params_dir\pv2_ifn_bn08_b09_ba_4.txt", ".\params_dir\pv2_ifn_bn08_b09_er_4.txt"
+    ".\params_dir\pv2_ifn_b1_email_1.txt", ".\params_dir\pv2_ifn_b1_email_2.txt", ".\params_dir\pv2_ifn_b1_email_3.txt",
+    ".\params_dir\pv2_ifn_b1_email_4.txt", ".\params_dir\pv2_ifn_b1_email_5.txt",
+    ".\params_dir\pv2_ifn_b07_email_1.txt", ".\params_dir\pv2_ifn_b07_email_2.txt", ".\params_dir\pv2_ifn_b07_email_3.txt",
+    ".\params_dir\pv2_ifn_b07_email_4.txt", ".\params_dir\pv2_ifn_b07_email_5.txt",
+    ".\params_dir\pv2_ifn_b04_email_1.txt", ".\params_dir\pv2_ifn_b04_email_2.txt", ".\params_dir\pv2_ifn_b04_email_3.txt",
+    ".\params_dir\pv2_ifn_b04_email_4.txt", ".\params_dir\pv2_ifn_b04_email_5.txt"
 )
+<#
+$prefix_ba = ".\wyniki_nowe\propv2\rozne_bety\ba\"
+$prefix_er = ".\wyniki_nowe\propv2\rozne_bety\er\"
+#>
 
-$prefix = ".\wyniki_nowe\propv2\rozne_bety\nowe\"
+$prefix_b1 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas1\email\"
+$prefix_b07 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas07\email\"
+$prefix_b04 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas04\email\"
 
 $output_files = @(
-    "${prefix}b04bn03ba.txt", "${prefix}b04bn03er.txt",
-    "${prefix}b04bn05ba.txt", "${prefix}b04bn05er.txt",
-    "${prefix}b04bn07ba.txt", "${prefix}b04bn07er.txt",
-    "${prefix}b04bn09ba.txt", "${prefix}b04bn09er.txt",
-    
-    "${prefix}b06bn03ba.txt", "${prefix}b06bn03er.txt",
-    "${prefix}b06bn05ba.txt", "${prefix}b06bn05er.txt",
-    "${prefix}b06bn07ba.txt", "${prefix}b06bn07er.txt",
-    "${prefix}b06bn09ba.txt", "${prefix}b06bn09er.txt",
-    
-    "${prefix}b08bn03ba.txt", "${prefix}b08bn03er.txt",
-    "${prefix}b08bn05ba.txt", "${prefix}b08bn05er.txt",
-    "${prefix}b08bn07ba.txt", "${prefix}b08bn07er.txt",
-    "${prefix}b08bn09ba.txt", "${prefix}b08bn09er.txt"
+    "${prefix_b1}1.txt", "${prefix_b1}2.txt", "${prefix_b1}3.txt",
+    "${prefix_b1}4.txt", "${prefix_b1}5.txt",
+    "${prefix_b07}1.txt", "${prefix_b07}2.txt", "${prefix_b07}3.txt",
+    "${prefix_b07}4.txt", "${prefix_b07}5.txt",
+    "${prefix_b04}1.txt", "${prefix_b04}2.txt", "${prefix_b04}3.txt",
+    "${prefix_b04}4.txt", "${prefix_b04}5.txt"
 )
 <#
 $output_files = @("${prefix_ba}1_03.txt", "${prefix_ba}1_03_03.txt", "${prefix_ba}1_03_03_03.txt", "${prefix_ba}1_03_03_03_03.txt",

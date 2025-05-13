@@ -8,7 +8,7 @@ import pandas as pd
 plt.rcParams['axes.labelsize'] = 12 
 
 main_betas = ["1", "08", "06", "04"]
-noise_betas = ["_03", "_05", "_07", "_09"]
+noise_betas = ["_03", "_04", "_05", "_06", "_07", "_08", "_09", "_1"]
 
 
 network_names = ["ba", "er"]
@@ -25,7 +25,7 @@ for network in network_names:
         for noise_b in noise_betas:
             ax = plt.figure().add_subplot(projection='3d')
             file_name = main_b + 4 * noise_b + ".txt"
-            dir = "wyniki\\rozne_bety_propv2\\"
+            dir = "wyniki_nowe\\propv1\\rozne_bety\\"
             dir += network + "\\" + file_name
             file = open(dir, "r")
             gammas = []
@@ -34,7 +34,10 @@ for network in network_names:
                 main_b_val = 1.
             else:
                 main_b_val = float(main_b[0] + "." + main_b[1])
-            noise_b_val = float(noise_b[1] + "." + noise_b[2])
+            if noise_b == "_1":
+                noise_b_val = 1.
+            else:        
+                noise_b_val = float(noise_b[1] + "." + noise_b[2])
             for line in file:
                 gamma = float(line.split(" ")[0])
                 avg_prec = float(line.split(" ")[1])
@@ -56,7 +59,7 @@ for network in network_names:
         plt.figure(figsize=(8, 8))
         sns.heatmap(heatmap_data, annot = True, cmap="coolwarm", cbar_kws={'label': 'Precision'})
         plt.title(network + " alpha: " + str(label))
-        plt.savefig("3d_new_" + network + "_" + str(label) + ".pdf")
+        plt.savefig("3d_new_propv1_" + network + "_" + str(label) + ".pdf")
         '''
         fig = go.Figure(data=[go.Scatter3d(
             x=m_betas,

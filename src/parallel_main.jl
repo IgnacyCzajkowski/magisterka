@@ -71,7 +71,7 @@ function parallel_simulation_set(betas_vect, network_params, observer_count, gam
         # Create a network instance depending on network_params.
         #N = nothing
         if length(network_params) == 1
-            N::Utils.Network = Utils.generate_network(network_params[1])
+            N::Utils.Network = Utils.generate_network(network_params[1], inf_num) # Dodalem inf_num do arg 
         elseif length(network_params) == 2
             nodes::Int = network_params[1]
             prob::Float16 = network_params[2]
