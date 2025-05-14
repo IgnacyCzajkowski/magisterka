@@ -12,21 +12,21 @@ $input_files = @(
 #>
 
 $input_files = @(
-    ".\params_dir\pv2_ifn_b1_email_1.txt", ".\params_dir\pv2_ifn_b1_email_2.txt", ".\params_dir\pv2_ifn_b1_email_3.txt",
-    ".\params_dir\pv2_ifn_b1_email_4.txt", ".\params_dir\pv2_ifn_b1_email_5.txt",
-    ".\params_dir\pv2_ifn_b07_email_1.txt", ".\params_dir\pv2_ifn_b07_email_2.txt", ".\params_dir\pv2_ifn_b07_email_3.txt",
-    ".\params_dir\pv2_ifn_b07_email_4.txt", ".\params_dir\pv2_ifn_b07_email_5.txt",
-    ".\params_dir\pv2_ifn_b04_email_1.txt", ".\params_dir\pv2_ifn_b04_email_2.txt", ".\params_dir\pv2_ifn_b04_email_3.txt",
-    ".\params_dir\pv2_ifn_b04_email_4.txt", ".\params_dir\pv2_ifn_b04_email_5.txt"
+    ".\params_dir\pv2_ifn_b1_ucirving_1.txt", ".\params_dir\pv2_ifn_b1_ucirving_2.txt", ".\params_dir\pv2_ifn_b1_ucirving_3.txt",
+    ".\params_dir\pv2_ifn_b1_ucirving_4.txt", ".\params_dir\pv2_ifn_b1_ucirving_5.txt",
+    ".\params_dir\pv2_ifn_b07_ucirving_1.txt", ".\params_dir\pv2_ifn_b07_ucirving_2.txt", ".\params_dir\pv2_ifn_b07_ucirving_3.txt",
+    ".\params_dir\pv2_ifn_b07_ucirving_4.txt", ".\params_dir\pv2_ifn_b07_ucirving_5.txt",
+    ".\params_dir\pv2_ifn_b04_ucirving_1.txt", ".\params_dir\pv2_ifn_b04_ucirving_2.txt", ".\params_dir\pv2_ifn_b04_ucirving_3.txt",
+    ".\params_dir\pv2_ifn_b04_ucirving_4.txt", ".\params_dir\pv2_ifn_b04_ucirving_5.txt"
 )
 <#
 $prefix_ba = ".\wyniki_nowe\propv2\rozne_bety\ba\"
 $prefix_er = ".\wyniki_nowe\propv2\rozne_bety\er\"
 #>
 
-$prefix_b1 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas1\email\"
-$prefix_b07 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas07\email\"
-$prefix_b04 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas04\email\"
+$prefix_b1 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas1\ucirving\"
+$prefix_b07 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas07\ucirving\"
+$prefix_b04 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas04\ucirving\"
 
 $output_files = @(
     "${prefix_b1}1.txt", "${prefix_b1}2.txt", "${prefix_b1}3.txt",
