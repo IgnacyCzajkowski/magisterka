@@ -4,16 +4,18 @@ import sys
 
 #print(plt.rcParams.keys())
 
-#plt.rcParams['text.usetext'] = True 
+plt.rcParams['text.usetex'] = True 
 plt.rcParams['axes.labelsize'] = 12 
 
 file_names = ["1", "2", "3", "4", "5"]
 network_names = ["ba", "er"]
 beta_names = ["betas1", "betas07", "betas04"] 
-beta_labels = ["b=1.0", "b=0.7", "b=0.4"] 
+beta_labels = [r'$\beta = 1.0$', r'$\beta = 0.7$', r'$\beta = 0.4$'] 
 marker_labels = ['o', 's', '^', '*', 'v']
 
 k = 3
+
+
 
 plt.figure(figsize=(18, 18))
 
@@ -63,9 +65,9 @@ for i, beta_name in enumerate(beta_names):
             axs_rank[i, j].scatter(gammas, avg_rank, sizes, marker=marker_labels[inf_num-1], label = file_name)
 
 for x, axs in enumerate([axs_prec, axs_rank]):
-    ylabel = "Avg Precison" if x == 0 else "Avg Rank"
+    ylabel = "Średnia precyzja" if x == 0 else "Średni ranking"
     for ax in axs.flat:
-        ax.set(xlabel='IOL strength alpha', ylabel=ylabel)
+        ax.set(xlabel=r'siła IOL $\alpha$', ylabel=ylabel)
         ax.set_xticks(np.arange(0, 2.01, step=0.5))
         
         if x == 0:
@@ -80,13 +82,13 @@ for x, axs in enumerate([axs_prec, axs_rank]):
         ax.label_outer()
 
     axs[0, 1].legend(loc='upper left', fontsize="8", bbox_to_anchor=(-0.15, 0.98))
-    axs[0, 0].set_title(label="BA")
-    axs[0, 1].set_title(label="ER")
+    axs[0, 0].set_title(label="B-A")
+    axs[0, 1].set_title(label="E-R")
 
 for i in range(len(beta_labels)):
     print(axs_prec[i, 1].get_ylim())
     axs_prec[i, 1].text(2.15, axs_prec[i, 1].get_ylim()[0] + 0.5 * (axs_prec[i, 1].get_ylim()[1] - axs_prec[i, 1].get_ylim()[0]), beta_labels[i]) 
-    axs_rank[i, 1].text(2.15, 27, beta_labels[i]) 
+    axs_rank[i, 1].text(2.15, axs_rank[i, 1].get_ylim()[0] + 0.5 * (axs_rank[i, 1].get_ylim()[1] - axs_rank[i, 1].get_ylim()[0]), beta_labels[i])
 
 fig_prec.savefig(f"ilosc_inf_prec_{sys.argv[1]}.pdf") 
-fig_rank.savefig(f"ilosc_inf_rank_{sys.argv[1]}.pdf")             
+fig_rank.savefig(f"ilosc_inf_rank_{sys.argv[1]}.pdf")  
