@@ -1,51 +1,72 @@
-<#
-$input_files = @(
-                ".\params_dir\pv2_rb_ba_1.txt", ".\params_dir\pv2_rb_ba_2.txt", ".\params_dir\pv2_rb_ba_3.txt", ".\params_dir\pv2_rb_ba_4.txt",
-                ".\params_dir\pv2_rb_ba_5.txt", ".\params_dir\pv2_rb_ba_6.txt", ".\params_dir\pv2_rb_ba_7.txt", ".\params_dir\pv2_rb_ba_8.txt",
-                ".\params_dir\pv2_rb_ba_9.txt", ".\params_dir\pv2_rb_ba_10.txt", ".\params_dir\pv2_rb_ba_11.txt", ".\params_dir\pv2_rb_ba_12.txt",
-                ".\params_dir\pv2_rb_ba_13.txt", ".\params_dir\pv2_rb_ba_14.txt", ".\params_dir\pv2_rb_ba_15.txt", ".\params_dir\pv2_rb_ba_16.txt",
-                ".\params_dir\pv2_rb_er_1.txt", ".\params_dir\pv2_rb_er_2.txt", ".\params_dir\pv2_rb_er_3.txt", ".\params_dir\pv2_rb_er_4.txt",
-                ".\params_dir\pv2_rb_er_5.txt", ".\params_dir\pv2_rb_er_6.txt", ".\params_dir\pv2_rb_er_7.txt", ".\params_dir\pv2_rb_er_8.txt",
-                ".\params_dir\pv2_rb_er_9.txt", ".\params_dir\pv2_rb_er_10.txt", ".\params_dir\pv2_rb_er_11.txt", ".\params_dir\pv2_rb_er_12.txt",
-                ".\params_dir\pv2_rb_er_13.txt", ".\params_dir\pv2_rb_er_14.txt", ".\params_dir\pv2_rb_er_15.txt", ".\params_dir\pv2_rb_er_16.txt"
-)
-#>
 
 $input_files = @(
-    ".\params_dir\pv2_ifn_b1_ucirving_1.txt", ".\params_dir\pv2_ifn_b1_ucirving_2.txt", ".\params_dir\pv2_ifn_b1_ucirving_3.txt",
-    ".\params_dir\pv2_ifn_b1_ucirving_4.txt", ".\params_dir\pv2_ifn_b1_ucirving_5.txt",
-    ".\params_dir\pv2_ifn_b07_ucirving_1.txt", ".\params_dir\pv2_ifn_b07_ucirving_2.txt", ".\params_dir\pv2_ifn_b07_ucirving_3.txt",
-    ".\params_dir\pv2_ifn_b07_ucirving_4.txt", ".\params_dir\pv2_ifn_b07_ucirving_5.txt",
-    ".\params_dir\pv2_ifn_b04_ucirving_1.txt", ".\params_dir\pv2_ifn_b04_ucirving_2.txt", ".\params_dir\pv2_ifn_b04_ucirving_3.txt",
-    ".\params_dir\pv2_ifn_b04_ucirving_4.txt", ".\params_dir\pv2_ifn_b04_ucirving_5.txt"
+    ".\params_dir_new\pv1_bm1_bn03_email.txt", ".\params_dir_new\pv1_bm1_bn05_email.txt",
+    ".\params_dir_new\pv1_bm1_bn07_email.txt", ".\params_dir_new\pv1_bm1_bn09_email.txt",
+    ".\params_dir_new\pv1_bm08_bn03_email.txt", ".\params_dir_new\pv1_bm08_bn05_email.txt",
+    ".\params_dir_new\pv1_bm08_bn07_email.txt", ".\params_dir_new\pv1_bm08_bn09_email.txt",
+    ".\params_dir_new\pv1_bm06_bn03_email.txt", ".\params_dir_new\pv1_bm06_bn05_email.txt",
+    ".\params_dir_new\pv1_bm06_bn07_email.txt", ".\params_dir_new\pv1_bm06_bn09_email.txt",
+    ".\params_dir_new\pv1_bm04_bn03_email.txt", ".\params_dir_new\pv1_bm04_bn05_email.txt",
+    ".\params_dir_new\pv1_bm04_bn07_email.txt", ".\params_dir_new\pv1_bm04_bn09_email.txt",
+
+    ".\params_dir_new\pv1_bm1_bn03_infectious.txt", ".\params_dir_new\pv1_bm1_bn05_infectious.txt",
+    ".\params_dir_new\pv1_bm1_bn07_infectious.txt", ".\params_dir_new\pv1_bm1_bn09_infectious.txt",
+    ".\params_dir_new\pv1_bm08_bn03_infectious.txt", ".\params_dir_new\pv1_bm08_bn05_infectious.txt",
+    ".\params_dir_new\pv1_bm08_bn07_infectious.txt", ".\params_dir_new\pv1_bm08_bn09_infectious.txt",
+    ".\params_dir_new\pv1_bm06_bn03_infectious.txt", ".\params_dir_new\pv1_bm06_bn05_infectious.txt",
+    ".\params_dir_new\pv1_bm06_bn07_infectious.txt", ".\params_dir_new\pv1_bm06_bn09_infectious.txt",
+    ".\params_dir_new\pv1_bm04_bn03_infectious.txt", ".\params_dir_new\pv1_bm04_bn05_infectious.txt",
+    ".\params_dir_new\pv1_bm04_bn07_infectious.txt", ".\params_dir_new\pv1_bm04_bn09_infectious.txt",
+
+    ".\params_dir_new\pv1_bm1_bn03_ucirving.txt", ".\params_dir_new\pv1_bm1_bn05_ucirving.txt",
+    ".\params_dir_new\pv1_bm1_bn07_ucirving.txt", ".\params_dir_new\pv1_bm1_bn09_ucirving.txt",
+    ".\params_dir_new\pv1_bm08_bn03_ucirving.txt", ".\params_dir_new\pv1_bm08_bn05_ucirving.txt",
+    ".\params_dir_new\pv1_bm08_bn07_ucirving.txt", ".\params_dir_new\pv1_bm08_bn09_ucirving.txt",
+    ".\params_dir_new\pv1_bm06_bn03_ucirving.txt", ".\params_dir_new\pv1_bm06_bn05_ucirving.txt",
+    ".\params_dir_new\pv1_bm06_bn07_ucirving.txt", ".\params_dir_new\pv1_bm06_bn09_ucirving.txt",
+    ".\params_dir_new\pv1_bm04_bn03_ucirving.txt", ".\params_dir_new\pv1_bm04_bn05_ucirving.txt",
+    ".\params_dir_new\pv1_bm04_bn07_ucirving.txt", ".\params_dir_new\pv1_bm04_bn09_ucirving.txt"
 )
+
 <#
 $prefix_ba = ".\wyniki_nowe\propv2\rozne_bety\ba\"
 $prefix_er = ".\wyniki_nowe\propv2\rozne_bety\er\"
 #>
 
-$prefix_b1 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas1\ucirving\"
-$prefix_b07 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas07\ucirving\"
-$prefix_b04 = ".\wyniki_nowe\propv2\zaleznosc_od_ilosci_inf\betas04\ucirving\"
-
+$prefix_email = ".\wyniki_nowe\propv1\rozne_bety\email\"
+$prefix_infectious = ".\wyniki_nowe\propv1\rozne_bety\infectious\"
+$prefix_ucirving = ".\wyniki_nowe\propv1\rozne_bety\ucirving\"
+   
 $output_files = @(
-    "${prefix_b1}1.txt", "${prefix_b1}2.txt", "${prefix_b1}3.txt",
-    "${prefix_b1}4.txt", "${prefix_b1}5.txt",
-    "${prefix_b07}1.txt", "${prefix_b07}2.txt", "${prefix_b07}3.txt",
-    "${prefix_b07}4.txt", "${prefix_b07}5.txt",
-    "${prefix_b04}1.txt", "${prefix_b04}2.txt", "${prefix_b04}3.txt",
-    "${prefix_b04}4.txt", "${prefix_b04}5.txt"
-)
-<#
-$output_files = @("${prefix_ba}1_03.txt", "${prefix_ba}1_03_03.txt", "${prefix_ba}1_03_03_03.txt", "${prefix_ba}1_03_03_03_03.txt",
-                "${prefix_ba}1_05.txt", "${prefix_ba}1_05_05.txt", "${prefix_ba}1_05_05_05.txt", "${prefix_ba}1_05_05_05_05.txt",
-                "${prefix_ba}1_07.txt", "${prefix_ba}1_07_07.txt", "${prefix_ba}1_07_07_07.txt", "${prefix_ba}1_07_07_07_07.txt",
-                "${prefix_ba}1_09.txt", "${prefix_ba}1_09_09.txt", "${prefix_ba}1_09_09_09.txt", "${prefix_ba}1_09_09_09_09.txt",
-                "${prefix_er}1_03.txt", "${prefix_er}1_03_03.txt", "${prefix_er}1_03_03_03.txt", "${prefix_er}1_03_03_03_03.txt",
-                "${prefix_er}1_05.txt", "${prefix_er}1_05_05.txt", "${prefix_er}1_05_05_05.txt", "${prefix_er}1_05_05_05_05.txt",
-                "${prefix_er}1_07.txt", "${prefix_er}1_07_07.txt", "${prefix_er}1_07_07_07.txt", "${prefix_er}1_07_07_07_07.txt",
-                "${prefix_er}1_09.txt", "${prefix_er}1_09_09.txt", "${prefix_er}1_09_09_09.txt", "${prefix_er}1_09_09_09_09.txt")
-#>
+                "${prefix_email}1_03_03_03_03.txt", "${prefix_email}1_05_05_05_05.txt",
+                "${prefix_email}1_07_07_07_07.txt", "${prefix_email}1_09_09_09_09.txt",
+                "${prefix_email}08_03_03_03_03.txt", "${prefix_email}08_05_05_05_05.txt",
+                "${prefix_email}08_07_07_07_07.txt", "${prefix_email}08_09_09_09_09.txt",
+                "${prefix_email}06_03_03_03_03.txt", "${prefix_email}06_05_05_05_05.txt",
+                "${prefix_email}06_07_07_07_07.txt", "${prefix_email}06_09_09_09_09.txt",
+                "${prefix_email}04_03_03_03_03.txt", "${prefix_email}04_05_05_05_05.txt",
+                "${prefix_email}04_07_07_07_07.txt", "${prefix_email}04_09_09_09_09.txt",
+
+                "${prefix_infectious}1_03_03_03_03.txt", "${prefix_infectious}1_05_05_05_05.txt",
+                "${prefix_infectious}1_07_07_07_07.txt", "${prefix_infectious}1_09_09_09_09.txt",
+                "${prefix_infectious}08_03_03_03_03.txt", "${prefix_infectious}08_05_05_05_05.txt",
+                "${prefix_infectious}08_07_07_07_07.txt", "${prefix_infectious}08_09_09_09_09.txt",
+                "${prefix_infectious}06_03_03_03_03.txt", "${prefix_infectious}06_05_05_05_05.txt",
+                "${prefix_infectious}06_07_07_07_07.txt", "${prefix_infectious}06_09_09_09_09.txt",
+                "${prefix_infectious}04_03_03_03_03.txt", "${prefix_infectious}04_05_05_05_05.txt",
+                "${prefix_infectious}04_07_07_07_07.txt", "${prefix_infectious}04_09_09_09_09.txt",
+
+                "${prefix_ucirving}1_03_03_03_03.txt", "${prefix_ucirving}1_05_05_05_05.txt",
+                "${prefix_ucirving}1_07_07_07_07.txt", "${prefix_ucirving}1_09_09_09_09.txt",
+                "${prefix_ucirving}08_03_03_03_03.txt", "${prefix_ucirving}08_05_05_05_05.txt",
+                "${prefix_ucirving}08_07_07_07_07.txt", "${prefix_ucirving}08_09_09_09_09.txt",
+                "${prefix_ucirving}06_03_03_03_03.txt", "${prefix_ucirving}06_05_05_05_05.txt",
+                "${prefix_ucirving}06_07_07_07_07.txt", "${prefix_ucirving}06_09_09_09_09.txt",
+                "${prefix_ucirving}04_03_03_03_03.txt", "${prefix_ucirving}04_05_05_05_05.txt",
+                "${prefix_ucirving}04_07_07_07_07.txt", "${prefix_ucirving}04_09_09_09_09.txt"
+                
+                )
+
 
 
 for ($i=0; $i -lt $input_files.Length; $i++) {
