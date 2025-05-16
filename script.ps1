@@ -1,31 +1,31 @@
 
 $input_files = @(
-    ".\params_dir_new\pv1_bm1_bn03_email.txt", ".\params_dir_new\pv1_bm1_bn05_email.txt",
-    ".\params_dir_new\pv1_bm1_bn07_email.txt", ".\params_dir_new\pv1_bm1_bn09_email.txt",
-    ".\params_dir_new\pv1_bm08_bn03_email.txt", ".\params_dir_new\pv1_bm08_bn05_email.txt",
-    ".\params_dir_new\pv1_bm08_bn07_email.txt", ".\params_dir_new\pv1_bm08_bn09_email.txt",
-    ".\params_dir_new\pv1_bm06_bn03_email.txt", ".\params_dir_new\pv1_bm06_bn05_email.txt",
-    ".\params_dir_new\pv1_bm06_bn07_email.txt", ".\params_dir_new\pv1_bm06_bn09_email.txt",
-    ".\params_dir_new\pv1_bm04_bn03_email.txt", ".\params_dir_new\pv1_bm04_bn05_email.txt",
-    ".\params_dir_new\pv1_bm04_bn07_email.txt", ".\params_dir_new\pv1_bm04_bn09_email.txt",
+    ".\params_dir_new\pv2_bm1_bn03_email.txt", ".\params_dir_new\pv2_bm1_bn05_email.txt",
+    ".\params_dir_new\pv2_bm1_bn07_email.txt", ".\params_dir_new\pv2_bm1_bn09_email.txt",
+    ".\params_dir_new\pv2_bm08_bn03_email.txt", ".\params_dir_new\pv2_bm08_bn05_email.txt",
+    ".\params_dir_new\pv2_bm08_bn07_email.txt", ".\params_dir_new\pv2_bm08_bn09_email.txt",
+    ".\params_dir_new\pv2_bm06_bn03_email.txt", ".\params_dir_new\pv2_bm06_bn05_email.txt",
+    ".\params_dir_new\pv2_bm06_bn07_email.txt", ".\params_dir_new\pv2_bm06_bn09_email.txt",
+    ".\params_dir_new\pv2_bm04_bn03_email.txt", ".\params_dir_new\pv2_bm04_bn05_email.txt",
+    ".\params_dir_new\pv2_bm04_bn07_email.txt", ".\params_dir_new\pv2_bm04_bn09_email.txt",
 
-    ".\params_dir_new\pv1_bm1_bn03_infectious.txt", ".\params_dir_new\pv1_bm1_bn05_infectious.txt",
-    ".\params_dir_new\pv1_bm1_bn07_infectious.txt", ".\params_dir_new\pv1_bm1_bn09_infectious.txt",
-    ".\params_dir_new\pv1_bm08_bn03_infectious.txt", ".\params_dir_new\pv1_bm08_bn05_infectious.txt",
-    ".\params_dir_new\pv1_bm08_bn07_infectious.txt", ".\params_dir_new\pv1_bm08_bn09_infectious.txt",
-    ".\params_dir_new\pv1_bm06_bn03_infectious.txt", ".\params_dir_new\pv1_bm06_bn05_infectious.txt",
-    ".\params_dir_new\pv1_bm06_bn07_infectious.txt", ".\params_dir_new\pv1_bm06_bn09_infectious.txt",
-    ".\params_dir_new\pv1_bm04_bn03_infectious.txt", ".\params_dir_new\pv1_bm04_bn05_infectious.txt",
-    ".\params_dir_new\pv1_bm04_bn07_infectious.txt", ".\params_dir_new\pv1_bm04_bn09_infectious.txt",
+    ".\params_dir_new\pv2_bm1_bn03_infectious.txt", ".\params_dir_new\pv2_bm1_bn05_infectious.txt",
+    ".\params_dir_new\pv2_bm1_bn07_infectious.txt", ".\params_dir_new\pv2_bm1_bn09_infectious.txt",
+    ".\params_dir_new\pv2_bm08_bn03_infectious.txt", ".\params_dir_new\pv2_bm08_bn05_infectious.txt",
+    ".\params_dir_new\pv2_bm08_bn07_infectious.txt", ".\params_dir_new\pv2_bm08_bn09_infectious.txt",
+    ".\params_dir_new\pv2_bm06_bn03_infectious.txt", ".\params_dir_new\pv2_bm06_bn05_infectious.txt",
+    ".\params_dir_new\pv2_bm06_bn07_infectious.txt", ".\params_dir_new\pv2_bm06_bn09_infectious.txt",
+    ".\params_dir_new\pv2_bm04_bn03_infectious.txt", ".\params_dir_new\pv2_bm04_bn05_infectious.txt",
+    ".\params_dir_new\pv2_bm04_bn07_infectious.txt", ".\params_dir_new\pv2_bm04_bn09_infectious.txt",
 
-    ".\params_dir_new\pv1_bm1_bn03_ucirving.txt", ".\params_dir_new\pv1_bm1_bn05_ucirving.txt",
-    ".\params_dir_new\pv1_bm1_bn07_ucirving.txt", ".\params_dir_new\pv1_bm1_bn09_ucirving.txt",
-    ".\params_dir_new\pv1_bm08_bn03_ucirving.txt", ".\params_dir_new\pv1_bm08_bn05_ucirving.txt",
-    ".\params_dir_new\pv1_bm08_bn07_ucirving.txt", ".\params_dir_new\pv1_bm08_bn09_ucirving.txt",
-    ".\params_dir_new\pv1_bm06_bn03_ucirving.txt", ".\params_dir_new\pv1_bm06_bn05_ucirving.txt",
-    ".\params_dir_new\pv1_bm06_bn07_ucirving.txt", ".\params_dir_new\pv1_bm06_bn09_ucirving.txt",
-    ".\params_dir_new\pv1_bm04_bn03_ucirving.txt", ".\params_dir_new\pv1_bm04_bn05_ucirving.txt",
-    ".\params_dir_new\pv1_bm04_bn07_ucirving.txt", ".\params_dir_new\pv1_bm04_bn09_ucirving.txt"
+    ".\params_dir_new\pv2_bm1_bn03_ucirving.txt", ".\params_dir_new\pv2_bm1_bn05_ucirving.txt",
+    ".\params_dir_new\pv2_bm1_bn07_ucirving.txt", ".\params_dir_new\pv2_bm1_bn09_ucirving.txt",
+    ".\params_dir_new\pv2_bm08_bn03_ucirving.txt", ".\params_dir_new\pv2_bm08_bn05_ucirving.txt",
+    ".\params_dir_new\pv2_bm08_bn07_ucirving.txt", ".\params_dir_new\pv2_bm08_bn09_ucirving.txt",
+    ".\params_dir_new\pv2_bm06_bn03_ucirving.txt", ".\params_dir_new\pv2_bm06_bn05_ucirving.txt",
+    ".\params_dir_new\pv2_bm06_bn07_ucirving.txt", ".\params_dir_new\pv2_bm06_bn09_ucirving.txt",
+    ".\params_dir_new\pv2_bm04_bn03_ucirving.txt", ".\params_dir_new\pv2_bm04_bn05_ucirving.txt",
+    ".\params_dir_new\pv2_bm04_bn07_ucirving.txt", ".\params_dir_new\pv2_bm04_bn09_ucirving.txt"
 )
 
 <#
@@ -33,9 +33,9 @@ $prefix_ba = ".\wyniki_nowe\propv2\rozne_bety\ba\"
 $prefix_er = ".\wyniki_nowe\propv2\rozne_bety\er\"
 #>
 
-$prefix_email = ".\wyniki_nowe\propv1\rozne_bety\email\"
-$prefix_infectious = ".\wyniki_nowe\propv1\rozne_bety\infectious\"
-$prefix_ucirving = ".\wyniki_nowe\propv1\rozne_bety\ucirving\"
+$prefix_email = ".\wyniki_nowe\propv2\rozne_bety\email\"
+$prefix_infectious = ".\wyniki_nowe\propv2\rozne_bety\infectious\"
+$prefix_ucirving = ".\wyniki_nowe\propv2\rozne_bety\ucirving\"
    
 $output_files = @(
                 "${prefix_email}1_03_03_03_03.txt", "${prefix_email}1_05_05_05_05.txt",
