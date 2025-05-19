@@ -1,5 +1,5 @@
 import os 
-
+'''
 dir = "./params_dir_new"
 files_names = os.listdir(dir)
 
@@ -18,4 +18,13 @@ for read_file_name in files_names:
                 else:
                     write_file.write(read_line)
             write_file.close()
-        read_file.close()                
+        read_file.close()   
+'''
+dir = "./wyniki_nowe/propv1/rozne_bety/email"
+out_dir = "./wyniki_nowe/propv2/rozne_bety/email"
+
+files_names = os.listdir(dir)
+
+for file_name in files_names:
+    write_file = open(out_dir + "/" + file_name, "w")
+    write_file.close()

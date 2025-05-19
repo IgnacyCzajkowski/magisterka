@@ -25,7 +25,7 @@ fig_rank, axs_rank = plt.subplots(3, 2)
 for i, beta_name in enumerate(beta_names):
     for j, network_name in enumerate(network_names):
         for file_name in file_names:
-            dir = "wyniki_nowe\\propv2\\zaleznosc_od_ilosci_inf\\"
+            dir = "wyniki_nowe\\propv1\\zaleznosc_od_ilosci_inf\\"
             dir += beta_name + "\\" + network_name + "\\"
             dir += file_name
             file = open(dir + ".txt", "r")
@@ -68,7 +68,7 @@ for x, axs in enumerate([axs_prec, axs_rank]):
     ylabel = "Średnia precyzja" if x == 0 else "Średni ranking"
     rows_lims = []
     for i in range(len(beta_labels)):
-        rows_lims.append((min(axs[i, 0].get_ylim()[0], axs[i, 1].get_ylim()[0]), max(axs[i, 0].get_ylim()[1], axs[i, 1].get_ylim()[1])))
+        rows_lims.append((max(min(axs[i, 0].get_ylim()[0], axs[i, 1].get_ylim()[0]), 0), max(axs[i, 0].get_ylim()[1], axs[i, 1].get_ylim()[1])))
     for i, ax in enumerate(axs.flat):
         ax.set(xlabel=r'siła IOL $\alpha$', ylabel=ylabel)
         ax.set_xticks(np.arange(0, 2.01, step=0.5))
